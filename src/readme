@@ -1,0 +1,31 @@
+/** GET **/
+fetch("http://localhost:3000/courses", {method: "GET"})
+    .then(res => res.json())
+    .then(json => console.log(json))
+
+/** POST **/
+fetch("http://localhost:3000/courses", {
+    method: "POST",
+    body: JSON.stringify({
+        title: 'post-body-title'
+    }),
+    headers: {
+        'content-type': 'application/json'
+    }
+})
+    .then(res => res.json())
+    .then(json => console.log(json))
+
+/** PUT **/
+fetch("http://localhost:3000/courses/4", {
+    method: "PUT",
+    body: JSON.stringify({
+        title: 'put-body-title'
+    }),
+    headers: {
+        'content-type': 'application/json'
+    }
+})
+
+/** DELETE **/
+fetch("http://localhost:3000/courses/4", {method: "DELETE"})
