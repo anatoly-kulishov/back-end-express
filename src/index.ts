@@ -1,13 +1,12 @@
 import express from "express";
 
-const app = express();
+export const app = express();
 const port = 3000;
 
-const HTTP_STATUSES = {
+export const HTTP_STATUSES = {
     OK_200: 200,
     CREATED_201: 201,
     NO_CONTENT_204: 204,
-
     BAD_REQUEST_400: 400,
     NOT_FOUND_404: 404,
 }
@@ -23,9 +22,10 @@ const db = {
         {id: 4, title: 'devops'},
     ],
 };
+
 const COURSES_URL = '/courses';
 
-app.get(`${COURSES_URL}`, (req: any, res: any) => {
+app.get(`${COURSES_URL}`, (req, res) => {
     let foundCourses = db.courses;
 
     if (req.query.title) {
@@ -36,20 +36,21 @@ app.get(`${COURSES_URL}`, (req: any, res: any) => {
     res.json(foundCourses);
 })
 
-app.get(`${COURSES_URL}/:id`, (req: any, res: any) => {
+app.get(`${COURSES_URL}/:id`, (req, res) => {
     const foundCourse = db.courses.find(c => c.id === +req.params.id);
 
     if (!foundCourse) {
-        res.sendStatus(HTTP_STATUSES.NO_CONTENT_204);
+        res.sendStatus(HTTP_STATUSES.NOT_FOUND_404);
         return;
     }
 
     res.json(foundCourse);
 })
 
-app.post(`${COURSES_URL}`, (req: any, res: any) => {
+app.post(`${COURSES_URL}`, (req, res) => {
+
     if (!req.body.title) {
-        res.send(HTTP_STATUSES.BAD_REQUEST_400);
+        res.sendStatus(HTTP_STATUSES.BAD_REQUEST_400);
         return;
     }
 
@@ -65,9 +66,10 @@ app.post(`${COURSES_URL}`, (req: any, res: any) => {
         .json(createdCourse);
 })
 
-app.put(`${COURSES_URL}/:id`, (req: any, res: any) => {
+app.put(`${COURSES_URL}/:id`, (req, res) => {
+
     if (!req.body.title) {
-        res.send(HTTP_STATUSES.BAD_REQUEST_400);
+        res.sendStatus(HTTP_STATUSES.BAD_REQUEST_400);
         return;
     }
 
@@ -83,17 +85,22 @@ app.put(`${COURSES_URL}/:id`, (req: any, res: any) => {
     res.sendStatus(HTTP_STATUSES.NO_CONTENT_204);
 })
 
-app.delete(`${COURSES_URL}/:id`, (req: any, res: any) => {
+app.delete(`${COURSES_URL}/:id`, (req, res) => {
     const searchParam = db.courses.filter(c => c.id !== +req.params.id);
     const nonFound = searchParam.length === db.courses.length;
 
     if (nonFound) {
-        res.sendStatus(HTTP_STATUSES.NOT_FOUND_404);
+        res.sendStatus(HTTP_STATUSES.NO_CONTENT_204);
         return;
     }
 
     db.courses = searchParam;
     res.sendStatus(HTTP_STATUSES.NO_CONTENT_204);
+})
+
+app.delete('/__test__/data', (req, res) => {
+    db.courses = [];
+    res.sendStatus(HTTP_STATUSES.NO_CONTENT_204)
 })
 
 app.listen(port, () => {
