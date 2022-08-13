@@ -2,7 +2,7 @@
   "name": "express-nodemon-typescript",
   "version": "1.0.0",
   "main": "index.ts",
-  "repository": "git@github.com:/dogram99/express-nodemon-typescript.git",
+  "repository": "git@github.com:/anatoly-kulishov/express-nodemon-typescript.git",
   "author": "Anatoly.Kulishov <Anatoly.Kulishov@waveaccess.ru>",
   "license": "MIT",
   "dependencies": {
