@@ -23,7 +23,7 @@ const db = {
     ],
 };
 
-const COURSES_URL = '/courses';
+export const COURSES_URL = '/courses';
 
 app.get(`${COURSES_URL}`, (req, res) => {
     let foundCourses = db.courses;
